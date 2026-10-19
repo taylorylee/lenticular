@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Two Truths</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&family=Libre+Franklin:wght@400;600&display=swap">
+<style>
+/* Layout: editorial column (~620px) with interactive figures breaking wider (~900px). Light, single theme by choice. Accents come from the chosen palette. */
+:root{color-scheme:light;--ts:1;
+  --paper:#FFFFFF; --ink:#121212; --soft:#5A5A5A; --hair:#E2E2E2;
+  --a:#C98A1B; --b:#1A1A1A; --sea:#1A1A1A;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --sans:"Libre Franklin","Helvetica Neue",Arial,sans-serif}
+body{background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:calc(19px*var(--ts));line-height:1.6}
+.col{max-width:620px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wide{max-width:900px;margin:36px auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{padding-block:64px 8px}
+h1{font-weight:700;font-size:calc(clamp(30px,4.6vw,44px)*var(--ts));line-height:1.08;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.dek{font-size:calc(19px*var(--ts));line-height:1.4;color:var(--soft);margin:16px 0 22px;text-wrap:balance}
+.byline{font-family:var(--sans);font-size:calc(15px*var(--ts));font-weight:600;color:var(--ink)}
+p{margin:0 0 1.1em}
+h2{font-weight:700;font-size:calc(28px*var(--ts));line-height:1.2;margin:48px 0 14px;text-wrap:balance}
+.k-a{color:var(--a);font-weight:700}.k-b{color:var(--b);font-weight:700}
+.fig{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:32px;align-items:center}
+@media (max-width:720px){.fig{grid-template-columns:minmax(0,1fr)}}
+canvas{display:block;width:100%;max-width:100%;aspect-ratio:4/5;cursor:ew-resize;touch-action:pan-y;background:var(--sea);image-rendering:pixelated}
+.ctrl{font-family:var(--sans);font-size:calc(14px*var(--ts));color:var(--soft);display:grid;gap:8px}
+.ends{display:flex;justify-content:space-between;font-weight:600}.ends .x{color:var(--a)}.ends .y{color:var(--b)}
+input[type=range]{width:100%;accent-color:var(--ink)}
+.read{font-family:var(--sans);font-size:calc(15px*var(--ts));line-height:1.5;display:grid;gap:14px}
+.read .t{transition:opacity .2s}
+.read .ta strong{color:var(--a)}.read .tb strong{color:var(--b)}
+.read strong{font-weight:600;display:block;font-size:calc(17px*var(--ts))}
+.cap{font-family:var(--sans);font-size:calc(13px*var(--ts));color:var(--soft);margin-top:10px}
+.upl{font-family:var(--sans);font-size:calc(15px*var(--ts));display:flex;flex-wrap:wrap;gap:16px;margin:8px 0}
+.upl label{display:grid;gap:4px;color:var(--soft)}
+.pals{font-family:var(--sans);font-size:calc(14px*var(--ts));display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 4px}
+.pals button{display:flex;align-items:center;gap:8px;font:inherit;background:none;border:1px solid var(--hair);border-radius:4px;padding:6px 10px;cursor:pointer;color:var(--ink)}
+.pals button[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.pals span.sw{display:flex}.pals span.sw i{width:14px;height:14px;display:block}
+input:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+footer{font-family:var(--sans);font-size:calc(13px*var(--ts));color:var(--soft);border-top:1px solid var(--hair);padding-block:16px 64px;margin-top:40px}
+.tsz{font-family:var(--sans);display:flex;align-items:center;gap:6px;margin-top:14px;font-size:14px;color:var(--soft)}
+.tsz button{font:600 14px var(--sans);min-width:36px;height:32px;border:1px solid var(--hair);border-radius:4px;background:none;color:var(--ink);cursor:pointer}
+</style>
+
+</head>
+<body>
+<header class="col">
+  <h1>Two Truths</h1>
+  <p class="dek">Technology tells us two things about ourselves at once. A lenticular portrait shows why both can be right, depending on where you stand.</p>
+  <div class="byline">By Taylor Lee</div>
+  <div class="tsz" role="group" aria-label="Text size">Text size <button id="tsm" aria-label="Smaller text">A&minus;</button><button id="tsr" aria-label="Default text size">A</button><button id="tsp" aria-label="Larger text">A+</button></div>
+  <p class="cap" style="margin-top:20px">Palette</p><div class="pals" id="pals"></div>
+</header>
+
+<main>
+<div class="col">
+  <p>A lenticular print is two pictures cut into thin strips and interleaved behind a sheet of ridged plastic. From one side, each ridge shows a strip of the first picture. From the other side, it shows a strip of the second. As you move past the print, the image switches.</p>
+  <p>I use the form to look at how people experience technology. The same phone, camera, or archive can make a person feel two opposite things, and both feelings can be accurate at once.</p>
+  <p>Drag across the portrait below, or use the slider, to change your viewing angle.</p>
+</div>
+
+<section class="wide" data-plate="0"></section>
+
+<div class="col">
+  <p>On the left the figure is <span class="k-a">connected</span>: dozens of threads run out to people who know where she is and what she is doing. On the right she is <span class="k-b">alone</span>, lit by one small screen in an empty room. Both images show the same moment.</p>
+  <h2>Being noticed</h2>
+  <p>Attention works the same way. A camera that recognizes a face can feel like warmth, the sense of being seen and liked. The identical act can feel like a record being made. Whether you feel <span class="k-a">seen</span> or <span class="k-b">watched</span> often comes down to who you believe is behind the camera.</p>
+</div>
+
+<section class="wide" data-plate="1"></section>
+
+<div class="col">
+  <h2>Being kept</h2>
+  <p>Storage is cheap, so almost every moment is now saved. That can mean being <span class="k-a">remembered</span>, with nothing precious lost. It can also mean being <span class="k-b">recorded</span>, with nothing ever allowed to fade. The same file can carry either meaning for the person in it.</p>
+</div>
+
+<section class="wide" data-plate="2"></section>
+
+<div class="col">
+  <h2>Try it with your own photos</h2>
+  <p>The effect works best with two photographs of the same person in the same frame, taken at different moments. Choose a left image and a right image. They stay in your browser.</p>
+  <div class="upl">
+    <label for="fa">Left image<input id="fa" type="file" accept="image/*"></label>
+    <label for="fb">Right image<input id="fb" type="file" accept="image/*"></label>
+  </div>
+</div>
+
+<section class="wide" data-plate="3"></section>
+
+<div class="col">
+  <h2>Why this matters</h2>
+  <p>Much of the public argument about technology asks which story is true: does it connect us or isolate us, protect us or expose us. This series treats both answers as true at the same time. Each reading comes from the same object seen from a different position. For anyone designing technology for people, that means planning for both experiences.</p>
+</div>
+</main>
+
+
+<script>
+const plates=[
+ {a:"Connected",b:"Alone",aT:"Hundreds of people know what she had for lunch.",bT:"No one in the room knows she is there.",da:"network",db:"phone",cap:"Figure 1. The Feed."},
+ {a:"Seen",b:"Watched",aT:"The camera notices her, and someone likes what it found.",bT:"The camera notices her, and something logs what it found.",da:"halo",db:"grid",cap:"Figure 2. The Mirror."},
+ {a:"Remembered",b:"Recorded",aT:"Every moment kept, so nothing is lost.",bT:"Every moment kept, so nothing is forgotten.",da:"petals",db:"bars",cap:"Figure 3. The Archive."},
+ {a:"Left",b:"Right",aT:"Your first photograph.",bT:"Your second photograph.",da:"network",db:"phone",cap:"Figure 4. Your plate. Until you add photos, it shows the first scene."}
+];
+const W=800,H=1000,STRIP=16,A="#D9805A",B="#2E9C8C",FIG="#0b2226";
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rng(s){return()=>{s=(s*16807)%2147483647;return s/2147483647}}
+function figure(g,col){g.fillStyle=col;g.beginPath();g.arc(W/2,H*.42,W*.11,0,7);g.fill();
+  g.beginPath();g.moveTo(W*.24,H);g.bezierCurveTo(W*.26,H*.66,W*.38,H*.58,W/2,H*.58);g.bezierCurveTo(W*.62,H*.58,W*.74,H*.66,W*.76,H);g.closePath();g.fill()}
+function scene(kind,ac,seed){
+  const o=document.createElement('canvas');o.width=W;o.height=H;const g=o.getContext('2d'),r=rng(seed);
+  const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#3a3a48');bg.addColorStop(.45,'#b07a6a');bg.addColorStop(.62,'#2a5a5e');bg.addColorStop(1,'#08181b');
+  g.fillStyle=bg;g.fillRect(0,0,W,H);
+  if(kind==="network"){const pts=[];for(let i=0;i<70;i++)pts.push([r()*W,r()*H*.95]);
+    g.strokeStyle=ac;g.globalAlpha=.4;g.lineWidth=1.2;pts.forEach(p=>{g.beginPath();g.moveTo(W/2,H*.45);g.lineTo(p[0],p[1]);g.stroke()});
+    g.globalAlpha=1;g.fillStyle=ac;pts.forEach(p=>{g.beginPath();g.arc(p[0],p[1],3+r()*5,0,7);g.fill()});figure(g,FIG);}
+  else if(kind==="phone"){figure(g,'#081a1d');const gl=g.createRadialGradient(W/2,H*.7,5,W/2,H*.7,W*.45);gl.addColorStop(0,ac+'aa');gl.addColorStop(1,'transparent');
+    g.fillStyle=gl;g.fillRect(0,0,W,H);g.fillStyle='#eafff8';g.fillRect(W/2-34,H*.66,68,118);}
+  else if(kind==="halo"){for(let i=6;i>0;i--){g.strokeStyle=ac;g.globalAlpha=.12*i;g.lineWidth=14;g.beginPath();g.arc(W/2,H*.42,W*.11+i*34,0,7);g.stroke()}
+    g.globalAlpha=1;figure(g,FIG);}
+  else if(kind==="grid"){g.strokeStyle=ac;g.globalAlpha=.3;g.lineWidth=1;
+    for(let x=0;x<W;x+=40){g.beginPath();g.moveTo(x,0);g.lineTo(x,H);g.stroke()}for(let y=0;y<H;y+=40){g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke()}
+    g.globalAlpha=1;figure(g,FIG);g.strokeStyle=ac;g.lineWidth=3;g.strokeRect(W*.36,H*.29,W*.28,H*.25);}
+  else if(kind==="petals"){figure(g,FIG);for(let i=0;i<40;i++){g.fillStyle=ac;g.globalAlpha=.3+r()*.6;g.save();g.translate(r()*W,r()*H);g.rotate(r()*7);g.fillRect(-14,-20,28,36);g.fillStyle=FIG;g.fillRect(-10,-16,20,22);g.restore()}g.globalAlpha=1;}
+  else{figure(g,FIG);g.fillStyle=ac;for(let y=40;y<H;y+=26){let x=24;while(x<W-24){const w=4+r()*30;g.globalAlpha=.25+r()*.5;g.fillRect(x,y,w,8);x+=w+6}}g.globalAlpha=1;}
+  return o}
+function fit(img){const o=document.createElement('canvas');o.width=W;o.height=H;const g=o.getContext('2d');const s=Math.max(W/img.width,H/img.height);
+  g.drawImage(img,(W-img.width*s)/2,(H-img.height*s)/2,img.width*s,img.height*s);return o}
+const PALS=[
+ {n:"Solar",c:["#1A1A1A","#C98A1B","#F5CE4B","#F6F1E4"]},
+ {n:"Blueprint",c:["#0F2233","#2F5D8A","#9EC1D9","#F2F1EC"]},
+ {n:"Indigo print",c:["#14182B","#3B4A8C","#D6A24A","#F2EFE6"]},
+ {n:"Moss",c:["#1B2418","#4F6B3A","#C9B458","#F1ECDC"]},
+ {n:"Warm grey",c:["#1A1714","#6B6258","#B8AD9E","#F4EFE7"]}];
+let PAL;const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+function usePal(k){PAL=PALS[k].c.map(hex);const r=document.documentElement.style;r.setProperty('--a',PALS[k].c[1]);r.setProperty('--b',PALS[k].c[0]);r.setProperty('--sea',PALS[k].c[0])}
+usePal(0);
+const BAY=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+function dither(src){const w=W/4,h=H/4,t=document.createElement('canvas');t.width=w;t.height=h;const g=t.getContext('2d');g.drawImage(src,0,0,w,h);
+  const d=g.getImageData(0,0,w,h),q=d.data;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=(y*w+x)*4,l=(.3*q[i]+.59*q[i+1]+.11*q[i+2])/255,v=l*3+(BAY[(y%4)*4+x%4]/16-.5),k=Math.max(0,Math.min(3,Math.round(v)));q[i]=PAL[k][0];q[i+1]=PAL[k][1];q[i+2]=PAL[k][2]}
+  g.putImageData(d,0,0);const out=document.createElement('canvas');out.width=W;out.height=H;const og=out.getContext('2d');og.imageSmoothingEnabled=false;og.drawImage(t,0,0,W,H);return out}
+const views=[];
+document.querySelectorAll('[data-plate]').forEach(sec=>{
+  const i=+sec.dataset.plate,p=plates[i];
+  sec.innerHTML=`<div class="fig"><div><canvas width="${W}" height="${H}" aria-label="Lenticular portrait: ${p.a} or ${p.b}"></canvas><div class="cap">${p.cap}</div></div>
+  <div class="read"><div class="ctrl"><div class="ends"><span class="x">${p.a}</span><span class="y">${p.b}</span></div>
+  <label for="r${i}">Viewing angle</label><input id="r${i}" type="range" min="0" max="1000" value="${i%2?700:280}"></div>
+  <div class="t ta"><div><strong>${p.a}</strong>${p.aT}</div></div>
+  <div class="t tb"><div><strong>${p.b}</strong>${p.bT}</div></div></div></div>`;
+  const cv=sec.querySelector('canvas'),ctx=cv.getContext('2d'),rg=sec.querySelector('input');
+  const rawA=scene(p.da,'#f0f0f0',11+i*7),rawB=scene(p.db,'#d0d0d0',29+i*5);const v={rawA,rawB,imgA:dither(rawA),imgB:dither(rawB),angle:rg.value/1000,target:rg.value/1000};views[i]=v;
+  v.render=()=>{const n=W/STRIP;for(let k=0;k<n;k++){const x=k*STRIP,t=Math.min(1,Math.max(0,(v.angle+(k/n-.5)*.25-.5)*6+.5)),h=STRIP*(1-t);
+      if(h>0)ctx.drawImage(v.imgA,x,0,STRIP,H,x,0,h,H);if(STRIP-h>0)ctx.drawImage(v.imgB,x,0,STRIP,H,x+h,0,STRIP-h,H);
+      const s=ctx.createLinearGradient(x,0,x+STRIP,0);}
+    sec.querySelector('.ta').style.opacity=1-Math.max(0,v.angle-.5)*1.4;sec.querySelector('.tb').style.opacity=1-Math.max(0,.5-v.angle)*1.4};
+  const loop=()=>{v.angle+=(v.target-v.angle)*(reduce?1:.14);v.render();if(Math.abs(v.target-v.angle)>.001)requestAnimationFrame(loop)};
+  v.set=x=>{v.target=Math.min(1,Math.max(0,x));rg.value=Math.round(v.target*1000);requestAnimationFrame(loop)};
+  rg.addEventListener('input',()=>v.set(rg.value/1000));
+  cv.addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();v.set((e.clientX-r.left)/r.width)});
+  v.render();
+});
+[['fa','imgA'],['fb','imgB']].forEach(([id,key])=>document.getElementById(id).addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;
+  const im=new Image();im.onload=()=>{views[3]['raw'+key.slice(3)]=fit(im);views[3][key]=dither(views[3]['raw'+key.slice(3)]);views[3].render()};im.src=URL.createObjectURL(f)}));
+const pl=document.getElementById('pals');
+PALS.forEach((P,k)=>{const b=document.createElement('button');b.setAttribute('aria-pressed',k==0);b.innerHTML='<span class="sw">'+P.c.map(c=>'<i style="background:'+c+'"></i>').join('')+'</span>'+P.n;
+ b.onclick=()=>{usePal(k);pl.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));views.forEach(v=>{v.imgA=dither(v.rawA);v.imgB=dither(v.rawB);v.render()})};pl.appendChild(b)});
+let ts=1;try{ts=+localStorage.getItem('ts')||1}catch(e){}
+const setTs=v=>{ts=Math.min(1.4,Math.max(.8,Math.round(v*10)/10));document.documentElement.style.setProperty('--ts',ts);try{localStorage.setItem('ts',ts)}catch(e){}};
+setTs(ts);tsm.onclick=()=>setTs(ts-.1);tsp.onclick=()=>setTs(ts+.1);tsr.onclick=()=>setTs(1);
+</script>
+
+</body>
+</html>
